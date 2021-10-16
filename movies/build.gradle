@@ -1,0 +1,70 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdk 30
+
+    defaultConfig {
+        applicationId "ru.gaket.themoviedb"
+        minSdk 21
+        targetSdk 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
+            buildConfigField "String", "BASE_IMAGE_URL", "\"https://image.tmdb.org/t/p/w300\""
+
+            // If you decide to play with this app more than a few times,
+            // please, create your own api key, so this one does not get banned:
+            // https://www.themoviedb.org/documentation/api
+            buildConfigField "String", "API_KEY", "\"c058d9a291e7f1dd69f97f1afac69b61\""
+        }
+    }
+
+    viewBinding {
+        enabled = true
+    }
+}
+
+ext {
+    versions = [
+            retrofit        : "2.9.0",
+            gson            : "2.8.7",
+            glide           : "4.6.1",
+            kotlinExt       : "2.3.1",
+            kotlinCoroutines: "1.5.2",
+    ]
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinCoroutines"
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.kotlinExt"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.kotlinExt"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.kotlinExt"
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation "com.google.code.gson:gson:$versions.gson"
+    implementation 'jp.wasabeef:picasso-transformations:2.2.1'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
