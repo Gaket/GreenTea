@@ -16,10 +16,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
-import ru.gaket.themoviedb.model.common.WebNavigator
-import ru.gaket.themoviedb.model.common.isSuccess
-import ru.gaket.themoviedb.model.entities.Movie
-import ru.gaket.themoviedb.model.repositories.MoviesRepository
+import ru.gaket.themoviedb.data.common.WebNavigator
+import ru.gaket.themoviedb.data.common.isSuccess
+import ru.gaket.themoviedb.data.entities.Movie
+import ru.gaket.themoviedb.data.repositories.MoviesRepository
 import java.util.concurrent.CancellationException
 
 class OldMoviesViewModel(val moviesRepository: MoviesRepository, val navigator: WebNavigator) : ViewModel() {

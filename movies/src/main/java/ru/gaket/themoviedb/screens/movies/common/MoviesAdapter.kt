@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import ru.gaket.themoviedb.data.entities.Movie
 import ru.gaket.themoviedb.databinding.ItemMovieBinding
-import ru.gaket.themoviedb.model.entities.Movie
 
 class MoviesAdapter(private val listener: (Movie) -> Unit) :
     ListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {

@@ -6,29 +6,17 @@ import ru.gaket.tea.runtime.coroutines.adaptIdle
 import ru.gaket.tea.runtime.coroutines.noCommands
 import ru.gaket.tea.runtime.coroutines.with
 import ru.gaket.themoviedb.R
-import ru.gaket.themoviedb.model.common.Screen
-import ru.gaket.themoviedb.model.common.Text
-import ru.gaket.themoviedb.model.common.Try
-import ru.gaket.themoviedb.model.common.WebNavigator
-import ru.gaket.themoviedb.model.common.effects.NavigationCommands
-import ru.gaket.themoviedb.model.entities.Movie
-import ru.gaket.themoviedb.model.repositories.MoviesRepository
+import ru.gaket.themoviedb.data.common.Screen
+import ru.gaket.themoviedb.data.common.Text
+import ru.gaket.themoviedb.data.common.Try
+import ru.gaket.themoviedb.data.common.WebNavigator
+import ru.gaket.themoviedb.data.common.commands.NavigationCommands
+import ru.gaket.themoviedb.data.entities.Movie
+import ru.gaket.themoviedb.data.repositories.MoviesRepository
 import java.time.Duration
 import java.time.LocalTime
 
 object MoviesFeature {
-
-  val initialUpdate = State(
-    loading = false,
-    movies = emptyList(),
-    message = Text.ResText(R.string.movies_placeholder),
-    lastRequestTime = LocalTime.MIN,
-  ) with noCommands<Message, Dependencies>()
-
-  class Dependencies(
-    val repository: MoviesRepository,
-    val navigator: WebNavigator
-  )
 
   data class State(
     val loading: Boolean,
@@ -39,7 +27,7 @@ object MoviesFeature {
 
   sealed class Message {
     // user
-    data class SearchUpdated(val query: String) : Message()
+    data class SearchUpdated(val query: String, val time: LocalTime) : Message()
     data class MovieClicked(val movie: Movie) : Message()
 
     // system
@@ -50,10 +38,17 @@ object MoviesFeature {
 
   object Logic {
 
+    val initialUpdate = State(
+      loading = false,
+      movies = emptyList(),
+      message = Text.ResText(R.string.movies_placeholder),
+      lastRequestTime = LocalTime.MIN,
+    ) with noCommands<Message, Dependencies>()
+
     fun update(message: Message, state: State): Update<State, Message, Dependencies> =
       when (message) {
         is Message.MovieClicked -> handleMovieClick(message.movie, state)
-        is Message.SearchUpdated -> handleSearchUpdate(message.query, state)
+        is Message.SearchUpdated -> handleSearchUpdate(message.query, message.time, state)
         is Message.MoviesResponse -> handleMoviesResponse(message.response, state)
       }
 
@@ -77,22 +72,22 @@ object MoviesFeature {
       }
 
     private fun handleMovieClick(movie: Movie, state: State): Update<State, Message, Dependencies> {
-      return state with NavigationCommands.Forward(Screen.MovieDetails(movie.id)).adaptIdle { deps -> deps.navigator }
+      return state with
+        NavigationCommands.Forward(Screen.MovieDetails(movie.id)).adaptIdle { deps -> deps.navigator }
     }
 
-    private fun handleSearchUpdate(query: String, state: State): Update<State, Message, Dependencies> {
-      val now = LocalTime.now()
+    private fun handleSearchUpdate(query: String, currentTime: LocalTime, state: State): Update<State, Message, Dependencies> {
       return when {
         query.isEmpty() -> return state.copy(
           loading = false,
           movies = emptyList(),
           message = Text.ResText(R.string.movies_placeholder)
         ) with noCommands()
-        Duration.between(state.lastRequestTime, now).toMillis() < 500 -> {
+        Duration.between(state.lastRequestTime, currentTime).toMillis() < 500 -> {
           state with noCommands()
         }
         else -> {
-          state.copy(lastRequestTime = now, loading = true) with Commands.GetMovies(query)
+          state.copy(lastRequestTime = currentTime, loading = true) with Commands.GetMovies(query)
         }
       }
     }
@@ -106,5 +101,10 @@ object MoviesFeature {
     })
 
   }
+
+  class Dependencies(
+    val repository: MoviesRepository,
+    val navigator: WebNavigator
+  )
 
 }

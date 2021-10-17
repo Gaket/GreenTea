@@ -1,6 +1,6 @@
 package ru.gaket.themoviedb.screens.movies.mvvm
 
-import ru.gaket.themoviedb.model.entities.Movie
+import ru.gaket.themoviedb.data.entities.Movie
 
 /**
  * Class containing the result of the [Movie] request

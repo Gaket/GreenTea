@@ -5,8 +5,8 @@ import com.squareup.picasso.Picasso
 import com.squareup.picasso.Transformation
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import ru.gaket.themoviedb.R
+import ru.gaket.themoviedb.data.entities.Movie
 import ru.gaket.themoviedb.databinding.ItemMovieBinding
-import ru.gaket.themoviedb.model.entities.Movie
 
 
 class MovieViewHolder(private val binding: ItemMovieBinding) :

@@ -4,9 +4,9 @@ import android.content.Context
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.gaket.themoviedb.BuildConfig
-import ru.gaket.themoviedb.model.common.WebNavigator
-import ru.gaket.themoviedb.model.network.MoviesApi
-import ru.gaket.themoviedb.model.repositories.MoviesRepository
+import ru.gaket.themoviedb.data.common.WebNavigator
+import ru.gaket.themoviedb.data.network.MoviesApi
+import ru.gaket.themoviedb.data.repositories.MoviesRepository
 import ru.gaket.themoviedb.screens.movies.mvu.MoviesVmFactory
 import ru.gaket.themoviedb.screens.movies.mvvm.OldMoviesViewModel
 
