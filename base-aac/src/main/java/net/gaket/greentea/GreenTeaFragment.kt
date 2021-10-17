@@ -1,10 +1,8 @@
 package net.gaket.greentea
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
@@ -16,7 +14,7 @@ abstract class GreenTeaFragment<State : Any, Msg : Any, Dependency : Any> : Frag
 
   private val TAG = this::class.simpleName
 
-  abstract val viewModel: GreenTeaViewModel<State, Msg, Dependency>
+  protected abstract val viewModel: GreenTeaViewModel<State, Msg, Dependency>
 
   constructor() : super()
   constructor(@LayoutRes layoutRes: Int) : super(layoutRes)

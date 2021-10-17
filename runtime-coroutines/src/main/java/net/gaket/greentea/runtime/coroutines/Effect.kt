@@ -9,12 +9,12 @@ import kotlinx.coroutines.withContext
 
 typealias Action<Dependencies, Message> = suspend CoroutineScope.(Dependencies) -> Flow<Message>?
 
-interface Effect<Dependencies, out Message> {
+interface Command<Dependencies, out Message> {
   val run: Action<Dependencies, Message>
 
   companion object {
 
-    operator fun <Dependencies, Message> invoke(action: Action<Dependencies, Message>) = object : Effect<Dependencies, Message> {
+    operator fun <Dependencies, Message> invoke(action: Action<Dependencies, Message>) = object : Command<Dependencies, Message> {
       override val run = action
     }
 
@@ -41,7 +41,7 @@ interface Effect<Dependencies, out Message> {
 
       private fun <Dependencies, Message> withDispatcher(
         action: Action<Dependencies, Message>
-      ) = Effect<Dependencies, Message> {
+      ) = Command<Dependencies, Message> {
         if (dispatcher != null) withContext(dispatcher) { action(it) }
         else action(it)
       }
@@ -49,15 +49,15 @@ interface Effect<Dependencies, out Message> {
   }
 }
 
-inline fun <Dependencies1, Message, Dependencies2, Message2> Effect<Dependencies1, Message>.adapt(
+inline fun <Dependencies1, Message, Dependencies2, Message2> Command<Dependencies1, Message>.adapt(
   crossinline f1: (Flow<Message>?) -> Flow<Message2>?,
   crossinline f2: (Dependencies2) -> Dependencies1
-) = Effect<Dependencies2, Message2> { d2 ->
+) = Command<Dependencies2, Message2> { d2 ->
   val d = f2(d2)
   val message = this@adapt.run(this, d)
   f1(message)
 }
 
-inline fun <Dependencies1, Message, Dependencies2, Message2> Effect<Dependencies1, Message>.adaptIdle(
+inline fun <Dependencies1, Message, Dependencies2, Message2> Command<Dependencies1, Message>.adaptIdle(
   crossinline fa: (Dependencies2) -> Dependencies1
-): Effect<Dependencies2, Message2> = adapt({ null }, fa)
+): Command<Dependencies2, Message2> = adapt({ null }, fa)

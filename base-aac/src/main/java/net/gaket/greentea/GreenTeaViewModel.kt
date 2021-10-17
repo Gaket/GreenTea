@@ -3,11 +3,13 @@ package net.gaket.greentea
 import android.util.Log
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 import net.gaket.greentea.runtime.coroutines.GreenTeaRuntime
 import net.gaket.greentea.runtime.coroutines.Update
 
@@ -28,16 +30,17 @@ open class GreenTeaViewModel<State : Any, Message : Any, Dependencies : Any>(
     )
   }
 
-  private val _state : MutableStateFlow<State?> = MutableStateFlow(null)
+  private val _state: MutableStateFlow<State?> = MutableStateFlow(null)
 
   val state: Flow<State> = _state.filterNotNull()
 
   @CallSuper
   open fun onCreated() {
-//    val action = initAction
-//    initAction = {}
-//
-//    action.invoke()
+    runtime.listenState {
+      viewModelScope.launch {
+        _state.emit(it)
+      }
+    }
   }
 
   override fun onCleared() {
