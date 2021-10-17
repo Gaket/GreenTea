@@ -1,4 +1,4 @@
-package ru.gaket.greentea
+package ru.gaket.tea
 
 import android.util.Log
 import androidx.annotation.CallSuper
@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
-import ru.gaket.greentea.runtime.coroutines.GreenTeaRuntime
-import ru.gaket.greentea.runtime.coroutines.Update
+import ru.gaket.tea.runtime.coroutines.TeaRuntime
+import ru.gaket.tea.runtime.coroutines.Update
 
-open class GreenTeaViewModel<State : Any, Message : Any, Dependencies : Any>(
+open class TeaViewModel<State : Any, Message : Any, Dependencies : Any>(
   init: Update<State, Message, Dependencies>,
   update: (Message, State) -> Update<State, Message, Dependencies>,
   dependencies: Dependencies
@@ -22,7 +22,7 @@ open class GreenTeaViewModel<State : Any, Message : Any, Dependencies : Any>(
   private val TAG = this::class.simpleName
 
   private val runtime by lazy {
-    GreenTeaRuntime(
+    TeaRuntime(
       init = { init },
       update = update,
       dependencies = dependencies,

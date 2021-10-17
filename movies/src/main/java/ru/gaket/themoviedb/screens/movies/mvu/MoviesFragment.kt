@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
-import ru.gaket.greentea.GreenTeaFragment
+import ru.gaket.tea.TeaFragment
 import ru.gaket.themoviedb.MovieApp
 import ru.gaket.themoviedb.R
 import ru.gaket.themoviedb.databinding.MoviesFragmentBinding
@@ -19,7 +19,7 @@ import ru.gaket.themoviedb.utils.afterTextChanged
 import ru.gaket.themoviedb.utils.hideKeyboard
 
 
-class MoviesFragment : GreenTeaFragment<MoviesFeature.State, MoviesFeature.Message, MoviesFeature.Dependencies>() {
+class MoviesFragment : TeaFragment<MoviesFeature.State, MoviesFeature.Message, MoviesFeature.Dependencies>() {
 
   companion object {
     fun newInstance() = MoviesFragment()

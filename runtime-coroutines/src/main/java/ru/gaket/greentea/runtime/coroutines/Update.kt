@@ -1,4 +1,4 @@
-package ru.gaket.greentea.runtime.coroutines
+package ru.gaket.tea.runtime.coroutines
 
 data class Update<State, Message, Dependencies>(
   val state: State,

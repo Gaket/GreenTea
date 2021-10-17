@@ -1,4 +1,4 @@
-package ru.gaket.greentea.runtime.coroutines
+package ru.gaket.tea.runtime.coroutines
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope

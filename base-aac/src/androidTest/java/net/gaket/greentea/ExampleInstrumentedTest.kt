@@ -1,4 +1,4 @@
-package ru.gaket.greentea
+package ru.gaket.tea
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("ru.gaket.greentea.test", appContext.packageName)
+        assertEquals("ru.gaket.tea.test", appContext.packageName)
     }
 }

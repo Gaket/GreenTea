@@ -1,10 +1,10 @@
 package ru.gaket.themoviedb.screens.movies.mvu
 
-import ru.gaket.greentea.runtime.coroutines.Command
-import ru.gaket.greentea.runtime.coroutines.Update
-import ru.gaket.greentea.runtime.coroutines.adaptIdle
-import ru.gaket.greentea.runtime.coroutines.noCommands
-import ru.gaket.greentea.runtime.coroutines.with
+import ru.gaket.tea.runtime.coroutines.Command
+import ru.gaket.tea.runtime.coroutines.Update
+import ru.gaket.tea.runtime.coroutines.adaptIdle
+import ru.gaket.tea.runtime.coroutines.noCommands
+import ru.gaket.tea.runtime.coroutines.with
 import ru.gaket.themoviedb.R
 import ru.gaket.themoviedb.model.common.Screen
 import ru.gaket.themoviedb.model.common.Text

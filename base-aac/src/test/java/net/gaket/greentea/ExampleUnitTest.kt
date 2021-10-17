@@ -1,4 +1,4 @@
-package ru.gaket.greentea
+package ru.gaket.tea
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

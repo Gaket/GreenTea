@@ -6,7 +6,7 @@ dependencyResolutionManagement {
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
-rootProject.name = "GreenTea"
+rootProject.name = "Tea"
 include ':movies'
 include ':runtime-coroutines'
 include ':base-aac'

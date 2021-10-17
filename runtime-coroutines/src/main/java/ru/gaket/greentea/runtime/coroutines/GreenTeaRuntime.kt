@@ -1,4 +1,4 @@
-package ru.gaket.greentea.runtime.coroutines
+package ru.gaket.tea.runtime.coroutines
 
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -9,7 +9,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class GreenTeaRuntime<State : Any, Message : Any, Dependencies : Any>(
+class TeaRuntime<State : Any, Message : Any, Dependencies : Any>(
   init: () -> Update<State, Message, Dependencies>,
   private val update: (Message, State) -> Update<State, Message, Dependencies>,
   private val dependencies: Dependencies,

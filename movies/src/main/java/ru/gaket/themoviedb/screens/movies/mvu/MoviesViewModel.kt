@@ -2,13 +2,13 @@ package ru.gaket.themoviedb.screens.movies.mvu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.gaket.greentea.GreenTeaViewModel
+import ru.gaket.tea.TeaViewModel
 import ru.gaket.themoviedb.model.common.WebNavigator
 import ru.gaket.themoviedb.model.repositories.MoviesRepository
 
 class MoviesViewModel(
   dependencies: MoviesFeature.Dependencies
-) : GreenTeaViewModel<MoviesFeature.State, MoviesFeature.Message, MoviesFeature.Dependencies>(
+) : TeaViewModel<MoviesFeature.State, MoviesFeature.Message, MoviesFeature.Dependencies>(
   init = MoviesFeature.initialUpdate,
   update = MoviesFeature.Logic::update,
   dependencies = dependencies
