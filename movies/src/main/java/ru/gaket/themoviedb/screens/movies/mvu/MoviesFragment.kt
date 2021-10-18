@@ -54,7 +54,7 @@ class MoviesFragment : TeaFragment<MoviesFeature.State, MoviesFeature.Message, M
   }
 
   override fun render(state: MoviesFeature.State) {
-    if (state.loading) {
+    if (state.isLoading) {
       binding.searchIcon.visibility = View.GONE
       binding.searchProgress.visibility = View.VISIBLE
     } else {

@@ -19,7 +19,7 @@ import java.time.LocalTime
 object MoviesFeature {
 
   data class State(
-    val loading: Boolean,
+    val isLoading: Boolean,
     val movies: List<Movie>,
     val message: Text,
     val lastRequestTime: LocalTime
@@ -39,7 +39,7 @@ object MoviesFeature {
   object Logic {
 
     val initialUpdate = State(
-      loading = false,
+      isLoading = false,
       movies = emptyList(),
       message = Text.ResText(R.string.movies_placeholder),
       lastRequestTime = LocalTime.MIN,
@@ -58,15 +58,15 @@ object MoviesFeature {
     ): Update<State, Message, Dependencies> =
       when (response) {
         is Try.Failure -> state.copy(
-          loading = false,
+          isLoading = false,
           movies = emptyList(),
-          message = Text.ResText(R.string.error_unknown_on_download)
+          message = Text.ResText(R.string.search_error)
         ) with noCommands()
         is Try.Success -> {
           if (response.value.isEmpty()) {
-            state.copy(loading = false, movies = emptyList(), message = Text.ResText(R.string.empty_result))
+            state.copy(isLoading = false, movies = emptyList(), message = Text.ResText(R.string.empty_result))
           } else {
-            state.copy(loading = false, movies = response.value, message = Text.PlainText(""))
+            state.copy(isLoading = false, movies = response.value, message = Text.PlainText(""))
           } with noCommands()
         }
       }
@@ -79,7 +79,7 @@ object MoviesFeature {
     private fun handleSearchUpdate(query: String, currentTime: LocalTime, state: State): Update<State, Message, Dependencies> {
       return when {
         query.isEmpty() -> return state.copy(
-          loading = false,
+          isLoading = false,
           movies = emptyList(),
           message = Text.ResText(R.string.movies_placeholder)
         ) with noCommands()
@@ -87,7 +87,7 @@ object MoviesFeature {
           state with noCommands()
         }
         else -> {
-          state.copy(lastRequestTime = currentTime, loading = true) with Commands.GetMovies(query)
+          state.copy(lastRequestTime = currentTime, isLoading = true) with Commands.GetMovies(query)
         }
       }
     }
@@ -95,7 +95,7 @@ object MoviesFeature {
 
   object Commands {
 
-    class GetMovies(query: String) : Command<Dependencies, Message> by Command.single({ deps ->
+    data class GetMovies(val query: String) : Command<Dependencies, Message> by Command.single({ deps ->
       val movies = deps.repository.searchMovies(query)
       return@single Message.MoviesResponse(movies)
     })
