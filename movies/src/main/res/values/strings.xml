@@ -1,5 +1,6 @@
 <resources>
   <string name="app_name">The Movie Db</string>
+  <string name="app_name_mvvm">MVVM The Movie Db</string>
   <string name="movies_placeholder">Start typing in a search bar to find a movie</string>
   <string name="error_unknown_on_download">Unexpected error while trying to fetch movies!</string>
   <string name="search_error">Something went wrong when downloading videos. Please, check your connection and try again</string>
