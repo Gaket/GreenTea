@@ -22,6 +22,7 @@ import java.time.LocalTime
 
 class MoviesFragment : TeaFragment<MoviesFeature.State, MoviesFeature.Message, MoviesFeature.Dependencies>() {
 
+  //region Standard stuff
   companion object {
     fun newInstance() = MoviesFragment()
   }
@@ -41,28 +42,6 @@ class MoviesFragment : TeaFragment<MoviesFeature.State, MoviesFeature.Message, M
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
-  }
-
-  override fun initDispatchers() {
-    binding.searchInput.afterTextChanged { query ->
-      dispatch(MoviesFeature.Message.SearchUpdated(query, LocalTime.now()))
-    }
-    moviesAdapter = MoviesAdapter { movie ->
-      dispatch(MoviesFeature.Message.MovieClicked(movie))
-    }
-    binding.moviesList.adapter = moviesAdapter
-  }
-
-  override fun render(state: MoviesFeature.State) {
-    if (state.isLoading) {
-      binding.searchIcon.visibility = View.GONE
-      binding.searchProgress.visibility = View.VISIBLE
-    } else {
-      binding.searchIcon.visibility = View.VISIBLE
-      binding.searchProgress.visibility = View.GONE
-    }
-    moviesAdapter.submitList(state.movies)
-    binding.moviesPlaceholder.text = state.message.resolve(requireActivity())
   }
 
   private fun getVmFactory(): MoviesVmFactory =
@@ -89,6 +68,29 @@ class MoviesFragment : TeaFragment<MoviesFeature.State, MoviesFeature.Message, M
         }
       })
     }
+  }
+  //endregion
+
+  override fun initDispatchers() {
+    binding.searchInput.afterTextChanged { query ->
+      dispatch(MoviesFeature.Message.SearchUpdated(query, LocalTime.now()))
+    }
+    moviesAdapter = MoviesAdapter { movie ->
+      dispatch(MoviesFeature.Message.MovieClicked(movie))
+    }
+    binding.moviesList.adapter = moviesAdapter
+  }
+
+  override fun render(state: MoviesFeature.State) {
+    if (state.isLoading) {
+      binding.searchIcon.visibility = View.GONE
+      binding.searchProgress.visibility = View.VISIBLE
+    } else {
+      binding.searchIcon.visibility = View.VISIBLE
+      binding.searchProgress.visibility = View.GONE
+    }
+    moviesAdapter.submitList(state.movies)
+    binding.moviesPlaceholder.text = state.message.resolve(requireActivity())
   }
 
 }
