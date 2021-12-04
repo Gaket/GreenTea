@@ -17,7 +17,7 @@ class MoviesViewModel(
 class MoviesVmFactory(private val repo: MoviesRepository, private val navigator: WebNavigator) :
   ViewModelProvider.NewInstanceFactory() {
 
-  override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+  override fun <T : ViewModel> create(modelClass: Class<T>): T {
     return MoviesViewModel(MoviesFeature.Dependencies(repository = repo, navigator = navigator)) as T
   }
 }
