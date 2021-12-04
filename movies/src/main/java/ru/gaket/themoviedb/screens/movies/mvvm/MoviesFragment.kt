@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -71,68 +70,60 @@ class MoviesFragment : Fragment() {
 
     if (savedInstanceState == null) {
       lifecycleScope.launch {
-        viewModel.queryChannel.send("")
+        viewModel.onNewQuery("")
       }
     }
-    binding.searchInput.afterTextChanged {
+    binding.searchInput.afterTextChanged { query ->
       lifecycleScope.launch {
-        viewModel.queryChannel.send(it.toString())
+        viewModel.onNewQuery(query)
       }
     }
 
     viewModel.searchResult.observe(viewLifecycleOwner, { handleMoviesList(it) })
-    viewModel.searchState.observe(viewLifecycleOwner, { handleLoadingState(it) })
-  }
-
-  private fun handleLoadingState(it: SearchState) {
-    when (it) {
-      Loading -> {
-        binding.searchIcon.visibility = View.GONE
-        binding.searchProgress.visibility = View.VISIBLE
-      }
-      Ready -> {
-        binding.searchIcon.visibility = View.VISIBLE
-        binding.searchProgress.visibility = View.GONE
-      }
-    }
   }
 
   private fun handleMoviesList(it: MoviesResult) {
     when (it) {
-      is ValidResult -> {
+      is MoviesResult.SuccessResult -> {
+        hideLoading()
         binding.moviesPlaceholder.visibility = View.GONE
         binding.moviesList.visibility = View.VISIBLE
         moviesAdapter.submitList(it.result)
       }
-      is ErrorResult -> {
+      is MoviesResult.ErrorResult -> {
+        hideLoading()
         moviesAdapter.submitList(emptyList())
         binding.moviesPlaceholder.visibility = View.VISIBLE
         binding.moviesList.visibility = View.GONE
         binding.moviesPlaceholder.setText(R.string.search_error)
         Log.e(MoviesFragment::class.java.name, "Something went wrong.", it.e)
       }
-      is EmptyResult -> {
+      is MoviesResult.EmptyResult -> {
+        hideLoading()
         moviesAdapter.submitList(emptyList())
         binding.moviesPlaceholder.visibility = View.VISIBLE
         binding.moviesList.visibility = View.GONE
         binding.moviesPlaceholder.setText(R.string.empty_result)
       }
-      is EmptyQuery -> {
+      is MoviesResult.EmptyQuery -> {
+        hideLoading()
         moviesAdapter.submitList(emptyList())
         binding.moviesPlaceholder.visibility = View.VISIBLE
         binding.moviesList.visibility = View.GONE
         binding.moviesPlaceholder.setText(R.string.movies_placeholder)
       }
-      is TerminalError -> {
-        // Something went terribly wrong!
-        println("Our Flow terminated unexpectedly, so we're bailing!")
-        Toast.makeText(
-          activity,
-          getString(R.string.error_unknown_on_download),
-          Toast.LENGTH_SHORT
-        ).show()
-      }
+      is MoviesResult.Loading -> showLoading()
     }
+  }
+
+  private fun showLoading() {
+    binding.searchIcon.visibility = View.GONE
+    binding.searchProgress.visibility = View.VISIBLE
+  }
+
+  private fun hideLoading() {
+    binding.searchIcon.visibility = View.VISIBLE
+    binding.searchProgress.visibility = View.GONE
   }
 
   // This property is only valid between onCreateView and onDestroyView.

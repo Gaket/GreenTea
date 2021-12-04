@@ -9,7 +9,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class TeaRuntime<State : Any, Message : Any, Dependencies : Any>(
+class GreenTeaRuntime<State : Any, Message : Any, Dependencies : Any>(
   init: () -> Update<State, Message, Dependencies>,
   private val update: (Message, State) -> Update<State, Message, Dependencies>,
   private val dependencies: Dependencies,
