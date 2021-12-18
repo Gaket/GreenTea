@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1000488461569",
+    "project_id": "kotlin-movie-db",
+    "storage_bucket": "kotlin-movie-db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000488461569:android:a425590e27f2362ee3a700",
+        "android_client_info": {
+          "package_name": "ru.gaket.themoviedb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000488461569-kjt9ec63v8chne4j4c6suhbtppbngl01.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKYWqEfZpmhdJGVlt-K11LN_PHyRLocRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000488461569-kjt9ec63v8chne4j4c6suhbtppbngl01.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
