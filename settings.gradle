@@ -11,3 +11,4 @@ rootProject.name = "Tea"
 include ':movies'
 include ':runtime-coroutines'
 include ':base-aac'
+include ':tools'

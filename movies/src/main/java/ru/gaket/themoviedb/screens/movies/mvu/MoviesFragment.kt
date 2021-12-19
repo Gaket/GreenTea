@@ -17,6 +17,7 @@ import ru.gaket.themoviedb.screens.movies.common.GridSpacingItemDecoration
 import ru.gaket.themoviedb.screens.movies.common.MoviesAdapter
 import ru.gaket.themoviedb.utils.afterTextChanged
 import ru.gaket.themoviedb.utils.hideKeyboard
+import timber.log.Timber
 import java.time.LocalTime
 
 
@@ -37,6 +38,11 @@ class MoviesFragment : GreenTeaFragment<MoviesFeature.State, MoviesFeature.Messa
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     initViews(inflater, container)
     return binding.root
+  }
+
+  override fun onResume() {
+    super.onResume()
+    Timber.i("${this.javaClass.name} is opened")
   }
 
   override fun onDestroyView() {
