@@ -1,5 +1,6 @@
 package ru.gaket.themoviedb.screens.movies.mvu
 
+import com.fullstory.FS
 import ru.gaket.tea.runtime.coroutines.Command
 import ru.gaket.tea.runtime.coroutines.Update
 import ru.gaket.tea.runtime.coroutines.adaptIdle
@@ -72,11 +73,16 @@ object MoviesFeature {
       }
 
     private fun handleMovieClick(movie: Movie, state: State): Update<State, Message, Dependencies> {
+      FS.event("Movie Details Requested", mapOf("id" to movie.id))
       return state with
         NavigationCommands.Forward(Screen.MovieDetails(movie.id)).adaptIdle { deps -> deps.navigator }
     }
 
-    private fun handleSearchUpdate(query: String, currentTime: LocalTime, state: State): Update<State, Message, Dependencies> {
+    private fun handleSearchUpdate(
+      query: String,
+      currentTime: LocalTime,
+      state: State
+    ): Update<State, Message, Dependencies> {
       return when {
         query.isEmpty() -> return state.copy(
           isLoading = false,
@@ -87,6 +93,7 @@ object MoviesFeature {
           state with noCommands()
         }
         else -> {
+          FS.event("Query updated", mapOf("query" to query))
           state.copy(lastRequestTime = currentTime, isLoading = true) with Commands.GetMovies(query)
         }
       }
