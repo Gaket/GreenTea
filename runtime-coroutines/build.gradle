@@ -10,6 +10,6 @@ java {
 }
 
 dependencies {
-    api "org.jetbrains.kotlin:kotlin-stdlib:1.5.31"
+    api "org.jetbrains.kotlin:kotlin-stdlib:1.6.0"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
 }
