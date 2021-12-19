@@ -41,6 +41,8 @@ dependencies {
   implementation 'com.google.firebase:firebase-crashlytics-ktx'
   implementation 'com.google.firebase:firebase-analytics-ktx'
 
+  implementation "com.squareup.retrofit2:retrofit:2.9.0"
+  implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
 
   testImplementation 'junit:junit:4.+'
   androidTestImplementation 'androidx.test.ext:junit:1.1.3'

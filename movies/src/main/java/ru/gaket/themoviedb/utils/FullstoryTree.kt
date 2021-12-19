@@ -1,7 +1,7 @@
 package ru.gaket.themoviedb.utils
 
 import com.fullstory.FS
-import net.gaket.tools.RemoteLoggerTree
+import net.gaket.tools.logging.RemoteLoggerTree
 
 
 /**

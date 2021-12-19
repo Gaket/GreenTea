@@ -1,8 +1,8 @@
 package ru.gaket.themoviedb
 
 import android.app.Application
-import net.gaket.tools.CrashlyticsTree
-import net.gaket.tools.WtfNotifyQaTree
+import net.gaket.tools.logging.CrashlyticsTree
+import net.gaket.tools.logging.WtfNotifyQaTree
 import ru.gaket.themoviedb.di.AppComponent
 import ru.gaket.themoviedb.utils.FullstoryTree
 import timber.log.Timber

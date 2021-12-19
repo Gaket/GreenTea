@@ -1,4 +1,4 @@
-package net.gaket.tools
+package net.gaket.tools.logging
 
 import timber.log.Timber
 import java.util.ArrayList

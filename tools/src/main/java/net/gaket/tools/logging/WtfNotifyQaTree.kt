@@ -1,4 +1,4 @@
-package net.gaket.tools
+package net.gaket.tools.logging
 
 import android.app.Application
 import android.os.Handler
