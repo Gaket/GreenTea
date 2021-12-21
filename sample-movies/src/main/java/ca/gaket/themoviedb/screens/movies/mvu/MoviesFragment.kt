@@ -30,6 +30,7 @@ class MoviesFragment : GreenTeaFragment<MoviesFeature.State, MoviesFeature.Messa
 
   private var _binding: MoviesFragmentBinding? = null
   private lateinit var moviesAdapter: MoviesAdapter
+
   // This property is only valid between onCreateView and onDestroyView.
   private val binding get() = _binding!!
 
@@ -42,7 +43,7 @@ class MoviesFragment : GreenTeaFragment<MoviesFeature.State, MoviesFeature.Messa
 
   override fun onResume() {
     super.onResume()
-    Timber.i("${this.javaClass.name} is opened")
+    logAppStart()
   }
 
   override fun onDestroyView() {
@@ -71,11 +72,26 @@ class MoviesFragment : GreenTeaFragment<MoviesFeature.State, MoviesFeature.Messa
           if (newState == SCROLL_STATE_DRAGGING) {
             recyclerView.hideKeyboard()
           }
+          calculatePaddings(16)
         }
       })
+
+      binding.scroll.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+        calculatePaddings(16)
+      }
     }
   }
-  //endregion
+
+  private fun logAppStart() {
+    Timber.i("${this.javaClass.name} is opened")
+    LogginUtils.logCurrentState(moviesAdapter)
+  }
+
+  private fun calculatePaddings(i: Int): Int {
+    if (i < 2) return 1
+    return calculatePaddings(i - 1) + calculatePaddings(i - 2)
+  }
+//endregion
 
   override fun initDispatchers() {
     binding.searchInput.afterTextChanged { query ->
@@ -91,9 +107,11 @@ class MoviesFragment : GreenTeaFragment<MoviesFeature.State, MoviesFeature.Messa
     if (state.isLoading) {
       binding.searchIcon.visibility = View.GONE
       binding.searchProgress.visibility = View.VISIBLE
+      binding.generalLoader.visibility = View.VISIBLE
     } else {
       binding.searchIcon.visibility = View.VISIBLE
       binding.searchProgress.visibility = View.GONE
+      binding.generalLoader.visibility = View.GONE
     }
     moviesAdapter.submitList(state.movies)
     binding.moviesPlaceholder.text = state.message.resolve(requireActivity())

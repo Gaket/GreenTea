@@ -2,9 +2,13 @@ package ca.gaket.themoviedb
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.fullstory.FSOnReadyListener
+import com.fullstory.FSSessionData
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import ca.gaket.themoviedb.screens.movies.mvu.MoviesFragment
+import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FSOnReadyListener {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -14,5 +18,17 @@ class MainActivity : AppCompatActivity() {
         .replace(R.id.container, MoviesFragment.newInstance())
         .commitNow()
     }
+
+    FirebaseCrashlytics.getInstance().setUserId("abc123")
+    Timber.d("Let's see ho debug message works")
+    Timber.i("Info is here")
+    Timber.w("Oops, here goes a warning!")
+    Timber.e("Test message, something wrong!")
   }
+
+  override fun onReady(sessionData: FSSessionData) {
+    FirebaseCrashlytics.getInstance().setCustomKey("FsSession", sessionData.currentSessionURL)
+  }
+
+
 }
