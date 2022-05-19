@@ -33,6 +33,7 @@ object MoviesFeature {
 
     // system
     data class MoviesResponse(val response: Try<List<Movie>>) : Message()
+
     // subscriptions
     // here we could have messages from subscriptions
   }
