@@ -5,10 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
+import jp.wasabeef.recyclerview.animators.FlipInBottomXAnimator
+import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import ru.gaket.tea.GreenTeaFragment
 import ru.gaket.themoviedb.MovieApp
 import ru.gaket.themoviedb.R
@@ -18,6 +22,7 @@ import ru.gaket.themoviedb.screens.movies.common.MoviesAdapter
 import ru.gaket.themoviedb.utils.afterTextChanged
 import ru.gaket.themoviedb.utils.hideKeyboard
 import timber.log.Timber
+import java.lang.Math.random
 import java.time.LocalTime
 
 
@@ -55,6 +60,13 @@ class MoviesFragment : GreenTeaFragment<MoviesFeature.State, MoviesFeature.Messa
 
   private fun initViews(inflater: LayoutInflater, container: ViewGroup?) {
     _binding = MoviesFragmentBinding.inflate(inflater, container, false)
+    binding.searchIcon.setOnClickListener {
+      binding.containerButtons.updateLayoutParams {
+        val diff = (0..330).random()
+        height += diff
+      }
+    }
+
     binding.moviesList.apply {
       val spanCount =
         // Set span count depending on layout
