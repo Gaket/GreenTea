@@ -8,6 +8,11 @@
     motion:duration="1000"
     motion:motionInterpolator="linear">
 
+    <OnSwipe
+      motion:dragDirection="dragUp"
+      motion:touchAnchorId="@+id/top_image_container"
+      motion:touchAnchorSide="bottom" />
+
   </Transition>
 
   <ConstraintSet android:id="@id/start">
