@@ -1,12 +1,14 @@
 <resources>
-  <string name="app_name">The Movie Db</string>
-  <string name="app_name_mvvm">MVVM The Movie Db</string>
-  <string name="error_unknown_on_download">Unexpected error while trying to fetch movies!</string>
-  <string name="content_cinema_poster">Cinema poster</string>
-  <string name="search_icon">Search icon</string>
-  <string name="hint_search_query">Enter search query…</string>
+    <string name="app_name">The Movie Db</string>
+    <string name="app_name_mvvm">MVVM The Movie Db</string>
+    <string name="error_unknown_on_download">Unexpected error while trying to fetch movies!</string>
+    <string name="content_cinema_poster">Cinema poster</string>
+    <string name="search_icon">Search icon</string>
+    <string name="hint_search_query">Enter search query…</string>
 
-  <string name="movies_placeholder">Start typing in a search bar to find a movie</string>
-  <string name="empty_result">No results matching your query</string>
-  <string name="search_error">Something went wrong when downloading videos. Please, check your connection and try again</string>
+    <string name="movies_placeholder">Start typing in a search bar to find a movie</string>
+    <string name="empty_result">No results matching your query</string>
+    <string name="search_error">Something went wrong when downloading videos. Please, check your connection and try again</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
