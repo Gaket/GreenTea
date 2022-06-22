@@ -1,7 +1,6 @@
 # GreenTea 
 
-[Work in progress]
-An example of using The Elm Architecture in Android. There is a working example and the most important base clases. Still, the project will be updated with better testing and more advanced features.
+Green Tea is a library providing a Runtime and base classes that can help you building your Android App based on the Model-View-Update pattern. Heavily inspired by The Elm Architecture [TEA](https://guide.elm-lang.org/architecture/)
 
 # TEA
 
@@ -14,6 +13,7 @@ Here are the meain features of TEA:
 *   Immutable state
 *   Pure functions for business / presentation logic
 *   Managed side effects
+*   Simple View and Side effects that don't contain logic
 
 These features lead to the next system qualities:
 * It is easy to navigate the code
@@ -24,9 +24,9 @@ We'll go through a few examples below.
 ## How?
 
 The architecture suggests splitting your code into 3 main parts:
-* State (Model) - literally, what is the state that should be displayed
-* View - mapping of the state to something that a user can see. Eg populating Android Views or Jetpack Compose functions
-* Update - some messages that come from a user or from "outside world" that lead to changes in the state
+* **State** (Model) - literally, what is the state that should be displayed
+* **View** - mapping of the state to something that a user can see. Eg populating Android Views or Jetpack Compose functions
+* **Update** - some messages that come from a user or from "outside world" that lead to changes in the state
 
 In addition, there is actually one more important piece:
 * Side Effects - anything that makes our pure and testable functions into something less predictable, for example IO calls
