@@ -10,9 +10,11 @@ import ca.gaket.themoviedb.data.common.Screen
 import ca.gaket.themoviedb.data.common.Text
 import ca.gaket.themoviedb.data.common.Try
 import ca.gaket.themoviedb.data.common.WebNavigator
-import ca.gaket.themoviedb.data.common.commands.NavigationCommands
+import ca.gaket.themoviedb.data.common.commands.NavigationEffects
 import ca.gaket.themoviedb.data.entities.Movie
 import ca.gaket.themoviedb.data.repositories.MoviesRepository
+import ca.gaket.tools.analytics.AnalyticsService
+import ca.gaket.tools.effects.AnalyticsEffects
 import com.fullstory.FS
 import java.time.Duration
 import java.time.LocalTime
@@ -73,11 +75,10 @@ object MoviesFeature {
         }
       }
 
-    private fun handleMovieClick(movie: Movie, state: State): Update<State, Message, Dependencies> {
-      FS.event("Movie Details Requested", mapOf("id" to movie.id))
-      return state with
-        NavigationCommands.Forward(Screen.MovieDetails(movie.id)).adaptIdle { deps -> deps.navigator }
-    }
+    private fun handleMovieClick(movie: Movie, state: State): Update<State, Message, Dependencies> = state with setOf(
+      NavigationEffects.Forward(Screen.MovieDetails(movie.id)).adaptIdle { deps -> deps.navigator },
+      AnalyticsEffects.SendEvent("Movie Details Requested", mapOf("id" to movie.id)) { analyticsService }
+    )
 
     private fun handleSearchUpdate(
       query: String,
@@ -94,8 +95,10 @@ object MoviesFeature {
           state with noEffects()
         }
         else -> {
-          FS.event("Query updated", mapOf("query" to query))
-          state.copy(lastRequestTime = currentTime, isLoading = true) with Effects.GetMovies(query)
+          state.copy(lastRequestTime = currentTime, isLoading = true) with setOf(
+            Effects.GetMovies(query),
+            AnalyticsEffects.SendEvent("Query updated", mapOf("query" to query)) { analyticsService }
+          )
         }
       }
     }
@@ -112,7 +115,8 @@ object MoviesFeature {
 
   class Dependencies(
     val repository: MoviesRepository,
-    val navigator: WebNavigator
+    val navigator: WebNavigator,
+    val analyticsService: AnalyticsService
   )
 
 }
