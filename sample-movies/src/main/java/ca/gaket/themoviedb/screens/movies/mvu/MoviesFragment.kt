@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,7 @@ class MoviesFragment : GreenTeaFragment<MoviesFeature.State, MoviesFeature.Messa
 
   private var _binding: MoviesFragmentBinding? = null
   private lateinit var moviesAdapter: MoviesAdapter
+
   // This property is only valid between onCreateView and onDestroyView.
   private val binding get() = _binding!!
 
@@ -88,7 +90,7 @@ class MoviesFragment : GreenTeaFragment<MoviesFeature.State, MoviesFeature.Messa
   }
 
   override fun render(state: MoviesFeature.State) {
-    if (state.isLoading) {
+    if (state.isLoading == true) {
       binding.searchIcon.visibility = View.GONE
       binding.searchProgress.visibility = View.VISIBLE
     } else {
@@ -96,7 +98,16 @@ class MoviesFragment : GreenTeaFragment<MoviesFeature.State, MoviesFeature.Messa
       binding.searchProgress.visibility = View.GONE
     }
     moviesAdapter.submitList(state.movies)
-    binding.moviesPlaceholder.text = state.message.resolve(requireActivity())
+    binding.moviesPlaceholder.text = state.message?.resolve(requireActivity())
+
+    hideElementsIfElementDoesNotExist(state)
+  }
+
+  private fun hideElementsIfElementDoesNotExist(state: MoviesFeature.State) {
+    binding.searchInput.isVisible = state.isLoading != null
+    binding.searchIcon.isVisible = state.isLoading != null && !state.isLoading
+    binding.moviesList.isVisible = state.movies != null
+    binding.moviesPlaceholder.isVisible = state.message != null
   }
 
 }

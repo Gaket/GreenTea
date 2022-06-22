@@ -1,4 +1,4 @@
-# GreenTea 
+# GreenTea
 
 Green Tea is a library providing a Runtime and base classes that can help you building your Android App based on the Model-View-Update pattern. Heavily inspired by The Elm Architecture [TEA](https://guide.elm-lang.org/architecture/)
 
@@ -8,7 +8,7 @@ The Elm Architecture is a pattern of building an app.
 
 ## Why?
 
-Here are the meain features of TEA:
+Here are the main features of TEA:
 *   Unidirectional dataflow
 *   Immutable state
 *   Pure functions for business / presentation logic

@@ -10,6 +10,14 @@ import java.time.LocalTime
 class MoviesFeatureTest {
 
   @Test
+  fun `Show welcoming message on the start`() {
+    val state = initialState()
+
+    assertThat(state.message).isEqualTo(Text.ResText(R.string.movies_placeholder))
+  }
+
+  /*
+  @Test
   fun `Search query update leads to loading state`() {
     val state = initialState()
     val testQuery = "test"
@@ -19,13 +27,6 @@ class MoviesFeatureTest {
 
     assertThat(update.state.isLoading).isTrue
     assertThat(update.commands).contains(MoviesFeature.Effects.GetMovies(testQuery))
-  }
-
-  @Test
-  fun `Show welcoming message on the start`() {
-    val state = initialState()
-
-    assertThat(state.message).isEqualTo(Text.ResText(R.string.movies_placeholder))
   }
 
   @Test
@@ -59,9 +60,8 @@ class MoviesFeatureTest {
 
     assertThat(update.state.isLoading).isFalse
   }
-
+*/
 
   private fun initialState() = MoviesFeature.Logic.initialUpdate.state
   private fun loadingState() = initialState().copy(isLoading = true)
-
 }
