@@ -58,6 +58,14 @@ And that's how you define a full-blown Feature. What's left?
 
 This project shows you and example of how a feature, written in MVVM may be migrated to MVU. It contains the Tea Runtime class and a few base classes that make creation of Features very easy and straightforward process.
 
+## Latest version
+
+The current version is in Beta, more tests and real-life example cases are going to be added soon.
+
+## Contacts
+
+For any questions, feel free to reach me out in [Twitter](https://twitter.com/ArtursTwit) or [LinkedIn](https://www.linkedin.com/in/gaket/)
+
 ## Readings
 
 [The Official Guide on The Elm Architecture](https://guide.elm-lang.org/architecture/)
