@@ -3,7 +3,7 @@ package ca.gaket.themoviedb.screens.movies.mvu
 import ca.gaket.tea.runtime.coroutines.Effect
 import ca.gaket.tea.runtime.coroutines.Update
 import ca.gaket.tea.runtime.coroutines.adaptIdle
-import ca.gaket.tea.runtime.coroutines.noCommands
+import ca.gaket.tea.runtime.coroutines.noEffects
 import ca.gaket.tea.runtime.coroutines.with
 import ca.gaket.themoviedb.R
 import ca.gaket.themoviedb.data.common.Screen
@@ -45,7 +45,7 @@ object MoviesFeature {
       movies = emptyList(),
       message = Text.ResText(R.string.movies_placeholder),
       lastRequestTime = LocalTime.MIN,
-    ) with noCommands<Message, Dependencies>()
+    ) with noEffects<Message, Dependencies>()
 
     fun update(message: Message, state: State): Update<State, Message, Dependencies> =
       when (message) {
@@ -63,13 +63,13 @@ object MoviesFeature {
           isLoading = false,
           movies = emptyList(),
           message = Text.ResText(R.string.search_error)
-        ) with noCommands()
+        ) with noEffects()
         is Try.Success -> {
           if (response.value.isEmpty()) {
             state.copy(isLoading = false, movies = emptyList(), message = Text.ResText(R.string.empty_result))
           } else {
             state.copy(isLoading = false, movies = response.value, message = Text.PlainText(""))
-          } with noCommands()
+          } with noEffects()
         }
       }
 
@@ -89,9 +89,9 @@ object MoviesFeature {
           isLoading = false,
           movies = emptyList(),
           message = Text.ResText(R.string.movies_placeholder)
-        ) with noCommands()
+        ) with noEffects()
         Duration.between(state.lastRequestTime, currentTime).toMillis() < 500 -> {
-          state with noCommands()
+          state with noEffects()
         }
         else -> {
           FS.event("Query updated", mapOf("query" to query))

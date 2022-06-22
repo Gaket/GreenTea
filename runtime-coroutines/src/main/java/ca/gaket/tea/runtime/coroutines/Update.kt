@@ -11,4 +11,4 @@ infix fun <State, Message, Dependencies> State.with(command: Effect<Dependencies
 infix fun <State, Message, Dependencies> State.with(effect: Set<Effect<Dependencies, Message>>) =
   Update(this, effect)
 
-fun <Message, Dependencies> noCommands() = emptySet<Effect<Dependencies, Message>>()
+fun <Message, Dependencies> noEffects() = emptySet<Effect<Dependencies, Message>>()
