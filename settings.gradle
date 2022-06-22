@@ -4,11 +4,10 @@ dependencyResolutionManagement {
     google()
     mavenCentral()
     maven { url "https://maven.fullstory.com" }
-    jcenter() // Warning: this repository is going to shut down soon
   }
 }
 rootProject.name = "Tea"
-include ':movies'
+include ':sample-movies'
 include ':runtime-coroutines'
 include ':base-aac'
 include ':tools'
