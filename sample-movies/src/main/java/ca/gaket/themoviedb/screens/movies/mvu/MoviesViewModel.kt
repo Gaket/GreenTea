@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import ca.gaket.tea.GreenTeaViewModel
 import ca.gaket.themoviedb.data.common.WebNavigator
 import ca.gaket.themoviedb.data.repositories.MoviesRepository
+import ca.gaket.tools.analytics.AnalyticsService
 
 class MoviesViewModel(
   dependencies: MoviesFeature.Dependencies
@@ -14,10 +15,10 @@ class MoviesViewModel(
   dependencies = dependencies
 )
 
-class MoviesVmFactory(private val repo: MoviesRepository, private val navigator: WebNavigator) :
+class MoviesVmFactory(private val repo: MoviesRepository, private val navigator: WebNavigator, private val analyticsService: AnalyticsService) :
   ViewModelProvider.NewInstanceFactory() {
 
   override fun <T : ViewModel> create(modelClass: Class<T>): T {
-    return MoviesViewModel(MoviesFeature.Dependencies(repository = repo, navigator = navigator)) as T
+    return MoviesViewModel(MoviesFeature.Dependencies(repository = repo, navigator = navigator, analyticsService = analyticsService)) as T
   }
 }

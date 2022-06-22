@@ -5,7 +5,7 @@ import ca.gaket.themoviedb.data.common.Navigator
 import ca.gaket.themoviedb.data.common.Screen
 
 
-object NavigationCommands {
+object NavigationEffects {
 
   class Forward(screen: Screen) : Effect<Navigator, Unit> by Effect.onMain.idle({ navigator ->
     navigator.forward(screen)
