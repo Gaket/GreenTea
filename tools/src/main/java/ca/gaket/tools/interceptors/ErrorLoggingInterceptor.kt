@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.gaket.tools.interceptors
+package ca.gaket.tools.interceptors
 
 import okhttp3.Headers
 import okhttp3.Interceptor
@@ -34,8 +34,8 @@ import java.util.concurrent.TimeUnit
  * Everything with a code above 400 gets logged into [httpErrorsLogger]
  */
 class ErrorLoggingInterceptor constructor(
-  private var mainLogger: Logger = Logger.DEFAULT,
-  private var httpErrorsLogger: Logger = Logger.DEFAULT
+    private var mainLogger: Logger = Logger.DEFAULT,
+    private var httpErrorsLogger: Logger = Logger.DEFAULT
 ) : Interceptor {
 
 
@@ -52,7 +52,7 @@ class ErrorLoggingInterceptor constructor(
       /** A [Logger] defaults output appropriate for the current platform. */
       @JvmField
       val DEFAULT: Logger = object :
-        Logger {
+          Logger {
         override fun log(message: String) {
           Platform.get().log(message)
         }

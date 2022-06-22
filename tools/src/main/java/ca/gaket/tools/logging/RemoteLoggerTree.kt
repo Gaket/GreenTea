@@ -1,4 +1,4 @@
-package net.gaket.tools.logging
+package ca.gaket.tools.logging
 
 import android.util.Log
 import timber.log.Timber

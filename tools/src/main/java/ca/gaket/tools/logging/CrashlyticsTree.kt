@@ -1,4 +1,4 @@
-package net.gaket.tools.logging
+package ca.gaket.tools.logging
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
