@@ -95,13 +95,13 @@ object MoviesFeature {
         }
         else -> {
           FS.event("Query updated", mapOf("query" to query))
-          state.copy(lastRequestTime = currentTime, isLoading = true) with Commands.GetMovies(query)
+          state.copy(lastRequestTime = currentTime, isLoading = true) with Effects.GetMovies(query)
         }
       }
     }
   }
 
-  object Commands {
+  object Effects {
 
     data class GetMovies(val query: String) : Effect<Dependencies, Message> by Effect.single({ deps ->
       val movies = deps.repository.searchMovies(query)
