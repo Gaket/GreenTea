@@ -2,13 +2,11 @@ package ca.gaket.themoviedb
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.fullstory.FSOnReadyListener
-import com.fullstory.FSSessionData
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import ca.gaket.themoviedb.screens.movies.mvu.MoviesFragment
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), FSOnReadyListener {
+class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -25,10 +23,5 @@ class MainActivity : AppCompatActivity(), FSOnReadyListener {
     Timber.w("Oops, here goes a warning!")
     Timber.e("Test message, something wrong!")
   }
-
-  override fun onReady(sessionData: FSSessionData) {
-    FirebaseCrashlytics.getInstance().setCustomKey("FsSession", sessionData.currentSessionURL)
-  }
-
 
 }

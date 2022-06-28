@@ -15,7 +15,6 @@ import ca.gaket.themoviedb.data.entities.Movie
 import ca.gaket.themoviedb.data.repositories.MoviesRepository
 import ca.gaket.tools.analytics.AnalyticsService
 import ca.gaket.tools.effects.AnalyticsEffects
-import com.fullstory.FS
 import java.time.Duration
 import java.time.LocalTime
 

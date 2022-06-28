@@ -2,12 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'fullstory'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
-
-fullstory {
-}
 
 android {
   compileSdk 31
@@ -19,22 +15,30 @@ android {
     versionCode 1
     versionName "1.0"
 
+    buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
+    buildConfigField "String", "BASE_IMAGE_URL", "\"https://image.tmdb.org/t/p/w300\""
+
+    // If you decide to play with this app more than a few times,
+    // please, create your own api key, so this one does not get banned:
+    // https://www.themoviedb.org/documentation/api
+    buildConfigField "String", "API_KEY", "\"c058d9a291e7f1dd69f97f1afac69b61\""
+
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
 
   buildTypes {
+    debug {
+      minifyEnabled false
+    }
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.debug
     }
-    debug {
-      buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
-      buildConfigField "String", "BASE_IMAGE_URL", "\"https://image.tmdb.org/t/p/w300\""
-
-      // If you decide to play with this app more than a few times,
-      // please, create your own api key, so this one does not get banned:
-      // https://www.themoviedb.org/documentation/api
-      buildConfigField "String", "API_KEY", "\"c058d9a291e7f1dd69f97f1afac69b61\""
+    benchmark {
+      initWith buildTypes.release
+      signingConfig signingConfigs.debug
+      matchingFallbacks = ['release']
     }
   }
 

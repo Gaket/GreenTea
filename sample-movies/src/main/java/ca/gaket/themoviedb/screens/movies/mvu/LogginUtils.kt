@@ -1,6 +1,6 @@
-package ru.gaket.themoviedb.screens.movies.mvu
+package ca.gaket.themoviedb.screens.movies.mvu
 
-import ru.gaket.themoviedb.screens.movies.common.MoviesAdapter
+import ca.gaket.themoviedb.screens.movies.common.MoviesAdapter
 import timber.log.Timber
 
 object LogginUtils {

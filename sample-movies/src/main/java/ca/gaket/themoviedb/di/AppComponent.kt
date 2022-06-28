@@ -7,7 +7,7 @@ import ca.gaket.themoviedb.data.network.MoviesApi
 import ca.gaket.themoviedb.data.repositories.MoviesRepository
 import ca.gaket.themoviedb.screens.movies.mvu.MoviesVmFactory
 import ca.gaket.themoviedb.screens.movies.mvvm.OldMoviesViewModel
-import ca.gaket.themoviedb.utils.FullstoryAnalytics
+import ca.gaket.tools.analytics.AnalyticsAggregator
 import ca.gaket.tools.interceptors.ErrorLoggingInterceptor
 import ca.gaket.tools.interceptors.ErrorToastInterceptor
 import okhttp3.OkHttpClient
@@ -35,8 +35,7 @@ class AppComponent(appContext: Context) {
       .create(MoviesApi::class.java)
 
     val moviesRepo = MoviesRepository(api)
-    val analyticsService = FullstoryAnalytics()
-
+    val analyticsService = AnalyticsAggregator(emptyList(), emptyList())
     moviesVmFactory = MoviesVmFactory(moviesRepo, navigator, analyticsService)
     oldMoviesVmFactory = OldMoviesViewModel.Factory(moviesRepo, navigator)
   }
