@@ -16,6 +16,12 @@ class MovieApp : Application() {
   override fun onCreate() {
     super.onCreate()
     plantTimberForest()
+    readConfig()
+  }
+
+  private fun readConfig() {
+    // Let's just assume we read smth from disk here
+    Thread.sleep(300)
   }
 
   private fun plantTimberForest() {
