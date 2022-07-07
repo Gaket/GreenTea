@@ -1,10 +1,13 @@
 package ca.gaket.themoviedb.screens.movies.mvu
 
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +20,7 @@ import ca.gaket.themoviedb.screens.movies.common.GridSpacingItemDecoration
 import ca.gaket.themoviedb.screens.movies.common.MoviesAdapter
 import ca.gaket.themoviedb.utils.afterTextChanged
 import ca.gaket.themoviedb.utils.hideKeyboard
+import ca.gaket.tools.android.toBitmap
 import timber.log.Timber
 import java.time.LocalTime
 
@@ -115,6 +119,12 @@ class MoviesFragment : GreenTeaFragment<MoviesFeature.State, MoviesFeature.Messa
     }
     moviesAdapter.submitList(state.movies)
     binding.moviesPlaceholder.text = state.message.resolve(requireActivity())
+    val screenshot = binding.root.toBitmap(config = Bitmap.Config.RGBA_F16)
+    binding.root.addView(ImageView(requireActivity()).apply {
+      setImageBitmap(screenshot)
+      visibility = View.INVISIBLE
+    }
+    )
   }
 
 }

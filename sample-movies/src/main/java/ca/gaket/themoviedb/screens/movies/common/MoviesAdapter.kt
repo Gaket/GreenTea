@@ -17,8 +17,14 @@ class MoviesAdapter(private val listener: (Movie) -> Unit) :
   }
 
   override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+    fibonacciFold(100)
     holder.bind(getItem(position), listener)
   }
+
+  fun fibonacciFold(n: Int) =
+    (2 until n).fold(1 to 1) { (prev, curr), _ ->
+      curr to (prev + curr)
+    }.second
 
   companion object {
     private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
