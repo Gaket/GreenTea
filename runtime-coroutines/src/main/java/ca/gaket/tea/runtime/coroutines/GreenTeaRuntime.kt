@@ -22,12 +22,14 @@ class GreenTeaRuntime<State : Any, Message : Any, Dependencies : Any>(
 
   private val stateListeners = mutableListOf<((State) -> Unit)>()
 
+  private var lastMsg: Message? = null
+
   private var currentState: State
 
   init {
     val initial = init()
     currentState = initial.state
-    step(initial)
+    step(initial, true)
   }
 
   fun listenState(listener: (State) -> Unit) {
@@ -35,24 +37,30 @@ class GreenTeaRuntime<State : Any, Message : Any, Dependencies : Any>(
     listener(currentState)
   }
 
-  fun dispatch(Message: Message) {
+  fun dispatch(message: Message) {
     if (isActive) {
-      // We use current state for update exactly because we don't want to play message on the outdated information
-      launch(runtimeContext) { step(update(Message, currentState)) }
+      launch(runtimeContext) {
+        if (isMsgThrottled(message, lastMsg)) return@launch
+        lastMsg = message
+        val next = update(message, currentState)
+        step(next, currentState !== next.state)
+      }
     }
   }
 
-  private fun step(next: Update<State, Message, Dependencies>) {
-    val renderState = next.state
-    currentState = renderState
+  private fun step(next: Update<State, Message, Dependencies>, notifyStateListeners: Boolean) {
+    val newState = next.state
+    if (notifyStateListeners) {
+      currentState = newState
 
-    launch(renderContext) {
-      stateListeners.notifyAll(renderState)
+      launch(renderContext) {
+        stateListeners.notifyAll(newState)
+      }
     }
 
-    next.effects.forEach { effekt ->
+    next.effects.forEach { effect ->
       launch(effectContext) {
-        effekt.run(this, dependencies)?.collect {
+        effect.run(this, dependencies)?.collect {
           dispatch(it)
         }
       }
@@ -60,4 +68,9 @@ class GreenTeaRuntime<State : Any, Message : Any, Dependencies : Any>(
   }
 
   private fun <T> List<(T) -> Unit>.notifyAll(value: T) = forEach { listener -> listener.invoke(value) }
+
+  private fun isMsgThrottled(newMessage: Message, lastMessage: Message?): Boolean {
+    if (newMessage !is CanBeThrottled || lastMessage !is CanBeThrottled) return false
+    return newMessage.isThrottled(lastMessage)
+  }
 }
