@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -15,7 +14,7 @@ class GreenTeaRuntime<State : Any, Message : Any, Dependencies : Any>(
   private val dependencies: Dependencies,
   private val runtimeContext: CoroutineContext = Dispatchers.Main,
   private val renderContext: CoroutineContext = Dispatchers.Main,
-  private val commandContext: CoroutineContext = Dispatchers.IO,
+  private val effectContext: CoroutineContext = Dispatchers.IO,
   exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { _, throwable -> throw throwable }
 ) : CoroutineScope {
 
@@ -51,8 +50,8 @@ class GreenTeaRuntime<State : Any, Message : Any, Dependencies : Any>(
       stateListeners.notifyAll(renderState)
     }
 
-    next.commands.forEach { effekt ->
-      launch(commandContext) {
+    next.effects.forEach { effekt ->
+      launch(effectContext) {
         effekt.run(this, dependencies)?.collect {
           dispatch(it)
         }

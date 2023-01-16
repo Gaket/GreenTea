@@ -18,7 +18,7 @@ class MoviesFeatureTest {
     val update = MoviesFeature.Logic.update(message, state)
 
     assertThat(update.state.isLoading).isTrue
-    assertThat(update.commands).contains(MoviesFeature.Effects.GetMovies(testQuery))
+    assertThat(update.effects).contains(MoviesFeature.Effects.GetMovies(testQuery))
   }
 
   @Test

@@ -1,4 +1,4 @@
-package ca.gaket.themoviedb.data.common.commands
+package ca.gaket.themoviedb.data.common.effects
 
 import ca.gaket.tea.runtime.coroutines.Effect
 import ca.gaket.themoviedb.data.common.Navigator

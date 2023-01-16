@@ -10,7 +10,7 @@ import ca.gaket.themoviedb.data.common.Screen
 import ca.gaket.themoviedb.data.common.Text
 import ca.gaket.themoviedb.data.common.Try
 import ca.gaket.themoviedb.data.common.WebNavigator
-import ca.gaket.themoviedb.data.common.commands.NavigationEffects
+import ca.gaket.themoviedb.data.common.effects.NavigationEffects
 import ca.gaket.themoviedb.data.entities.Movie
 import ca.gaket.themoviedb.data.repositories.MoviesRepository
 import ca.gaket.tools.analytics.AnalyticsService
