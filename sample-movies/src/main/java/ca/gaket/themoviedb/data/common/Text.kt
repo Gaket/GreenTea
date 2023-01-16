@@ -1,11 +1,14 @@
 package ca.gaket.themoviedb.data.common
 
 import android.content.Context
+import android.os.Parcelable
 import android.text.SpannableStringBuilder
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import androidx.core.text.bold
 import androidx.core.text.strikeThrough
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor
 import java.util.Locale
@@ -16,91 +19,97 @@ import java.util.Locale
  *
  * It's also really useful to be able to unit test our models without mocking Resources.
  */
-sealed class Text {
+sealed class Text : Parcelable {
 
-    abstract fun resolve(context: Context): CharSequence
+  abstract fun resolve(context: Context): CharSequence
 
-    fun resolveAsString(context: Context): String = resolve(context).toString()
+  fun resolveAsString(context: Context): String = resolve(context).toString()
 
-    data class MaskedText(val text: Text, val indices: (String) -> IntArray, val mask: Char) : Text() {
+  @Parcelize
+  data class MaskedText(val text: Text, val indices: (String) -> IntArray, val mask: Char) : Text() {
 
-        override fun resolve(context: Context): CharSequence = SpannableStringBuilder(text.resolve(context))
-            .apply {
-                indices(toString())
-                    .forEach { index ->
-                        replace(index, index + 1, mask.toString())
-                    }
-            }
+    override fun resolve(context: Context): CharSequence = SpannableStringBuilder(text.resolve(context))
+      .apply {
+        indices(toString())
+          .forEach { index ->
+            replace(index, index + 1, mask.toString())
+          }
+      }
 
-        companion object {
-            val PHONE_MASK_INDICES: (String) -> IntArray = { phone ->
-                phone.indices
-                    .drop(2)
-                    .dropLast(2)
-                    .toIntArray()
-            }
-            val EMAIL_MASK_INDICES: (String) -> IntArray = { email ->
-                val dotIndex = email.indexOfLast { it == '.' }
-                val atIndex = email.indexOf('@')
+    companion object {
+      val PHONE_MASK_INDICES: (String) -> IntArray = { phone ->
+        phone.indices
+          .drop(2)
+          .dropLast(2)
+          .toIntArray()
+      }
+      val EMAIL_MASK_INDICES: (String) -> IntArray = { email ->
+        val dotIndex = email.indexOfLast { it == '.' }
+        val atIndex = email.indexOf('@')
 
-                email.indices
-                    .drop(1)
-                    .filter { it != atIndex && it < dotIndex }
-                    .toIntArray()
-            }
-        }
+        email.indices
+          .drop(1)
+          .filter { it != atIndex && it < dotIndex }
+          .toIntArray()
+      }
     }
+  }
 
-    data class BoldText(val text: Text) : Text() {
+  @Parcelize
+  data class BoldText(val text: Text) : Text() {
 
-        override fun resolve(context: Context): CharSequence = SpannableStringBuilder()
-            .bold { append(text.resolve(context)) }
+    override fun resolve(context: Context): CharSequence = SpannableStringBuilder()
+      .bold { append(text.resolve(context)) }
+  }
+
+  @Parcelize
+  data class StrikeThroughText(val text: Text) : Text() {
+
+    override fun resolve(context: Context): CharSequence = SpannableStringBuilder()
+      .strikeThrough { append(text.resolve(context)) }
+  }
+
+  @Parcelize
+  data class PlainText(val value: String) : Text() {
+    override fun resolve(context: Context): CharSequence = value
+
+    companion object {
+      val EMPTY = PlainText("")
     }
+  }
 
-    data class StrikeThroughText(val text: Text) : Text() {
+  @Parcelize
+  data class ResText(@StringRes val resId: Int, private val formatArgs: @RawValue List<Any>? = null) : Text() {
+    override fun resolve(context: Context): CharSequence =
+      if (formatArgs == null) context.resources.getString(resId)
+      else {
+        val resolvedArgs = formatArgs.map { arg -> if (arg is Text) arg.resolveAsString(context) else arg }
+        context.resources.getString(resId, *resolvedArgs.toTypedArray())
+      }
+  }
 
-        override fun resolve(context: Context): CharSequence = SpannableStringBuilder()
-            .strikeThrough { append(text.resolve(context)) }
+  @Parcelize
+  data class ResPluralText(
+    @PluralsRes private val resId: Int,
+    private val quantity: Int,
+    private val formatArgs: @RawValue List<Any>? = null
+  ) : Text() {
+    override fun resolve(context: Context): CharSequence =
+      if (formatArgs == null) context.resources.getQuantityString(resId, quantity, quantity)
+      else context.resources.getQuantityString(resId, quantity, quantity, *formatArgs.toTypedArray())
+  }
+
+  @Parcelize
+  data class LocalDateText(
+    val temporal: @RawValue TemporalAccessor,
+    val patternResId: Int,
+  ) : Text() {
+
+    override fun resolve(context: Context): CharSequence {
+      val pattern = context.resources.getString(patternResId)
+      return DateTimeFormatter.ofPattern(pattern, Locale.getDefault()).format(temporal)
     }
-
-
-    data class PlainText(val value: String) : Text() {
-        override fun resolve(context: Context): CharSequence = value
-
-        companion object {
-            val EMPTY = PlainText("")
-        }
-    }
-
-    data class ResText(@StringRes val resId: Int, private val formatArgs: List<Any>? = null) : Text() {
-        override fun resolve(context: Context): CharSequence =
-            if (formatArgs == null) context.resources.getString(resId)
-            else {
-                val resolvedArgs = formatArgs.map { arg -> if (arg is Text) arg.resolveAsString(context) else arg }
-                context.resources.getString(resId, *resolvedArgs.toTypedArray())
-            }
-    }
-
-    data class ResPluralText(
-        @PluralsRes private val resId: Int,
-        private val quantity: Int,
-        private val formatArgs: List<Any>? = null
-    ) : Text() {
-        override fun resolve(context: Context): CharSequence =
-            if (formatArgs == null) context.resources.getQuantityString(resId, quantity, quantity)
-            else context.resources.getQuantityString(resId, quantity, quantity, *formatArgs.toTypedArray())
-    }
-
-    data class LocalDateText(
-        val temporal: TemporalAccessor,
-        val patternResId: Int,
-    ) : Text() {
-
-        override fun resolve(context: Context): CharSequence {
-            val pattern = context.resources.getString(patternResId)
-            return DateTimeFormatter.ofPattern(pattern, Locale.getDefault()).format(temporal)
-        }
-    }
+  }
 }
 
 /**

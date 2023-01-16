@@ -3,7 +3,6 @@ dependencyResolutionManagement {
   repositories {
     google()
     mavenCentral()
-    maven { url "https://maven.fullstory.com" }
   }
 }
 rootProject.name = "Tea"

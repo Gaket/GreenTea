@@ -1,5 +1,6 @@
 package ca.gaket.themoviedb.screens.movies.mvu
 
+import android.os.Parcelable
 import ca.gaket.tea.runtime.coroutines.Effect
 import ca.gaket.tea.runtime.coroutines.Update
 import ca.gaket.tea.runtime.coroutines.adaptIdle
@@ -15,18 +16,19 @@ import ca.gaket.themoviedb.data.entities.Movie
 import ca.gaket.themoviedb.data.repositories.MoviesRepository
 import ca.gaket.tools.analytics.AnalyticsService
 import ca.gaket.tools.effects.AnalyticsEffects
-import com.fullstory.FS
+import kotlinx.android.parcel.Parcelize
 import java.time.Duration
 import java.time.LocalTime
 
 object MoviesFeature {
 
+  @Parcelize
   data class State(
     val isLoading: Boolean,
     val movies: List<Movie>,
     val message: Text,
     val lastRequestTime: LocalTime
-  )
+  ) : Parcelable
 
   sealed class Message {
     // user
@@ -48,6 +50,9 @@ object MoviesFeature {
       message = Text.ResText(R.string.movies_placeholder),
       lastRequestTime = LocalTime.MIN,
     ) with noEffects<Message, Dependencies>()
+
+    fun restore(state: State): Update<State, Message, Dependencies> =
+      state with noEffects()
 
     fun update(message: Message, state: State): Update<State, Message, Dependencies> =
       when (message) {

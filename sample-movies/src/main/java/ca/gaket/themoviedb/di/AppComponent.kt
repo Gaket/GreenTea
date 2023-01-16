@@ -7,9 +7,13 @@ import ca.gaket.themoviedb.data.network.MoviesApi
 import ca.gaket.themoviedb.data.repositories.MoviesRepository
 import ca.gaket.themoviedb.screens.movies.mvu.MoviesVmFactory
 import ca.gaket.themoviedb.screens.movies.mvvm.OldMoviesViewModel
-import ca.gaket.themoviedb.utils.FullstoryAnalytics
+import ca.gaket.tools.analytics.AnalyticsAggregator
+import ca.gaket.tools.analytics.CrashlyticsIdentifier
+import ca.gaket.tools.analytics.LogcatAnalytics
 import ca.gaket.tools.interceptors.ErrorLoggingInterceptor
 import ca.gaket.tools.interceptors.ErrorToastInterceptor
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -35,7 +39,8 @@ class AppComponent(appContext: Context) {
       .create(MoviesApi::class.java)
 
     val moviesRepo = MoviesRepository(api)
-    val analyticsService = FullstoryAnalytics()
+    val analyticsService =
+      AnalyticsAggregator(listOf(LogcatAnalytics()), listOf(CrashlyticsIdentifier(Firebase.crashlytics)))
 
     moviesVmFactory = MoviesVmFactory(moviesRepo, navigator, analyticsService)
     oldMoviesVmFactory = OldMoviesViewModel.Factory(moviesRepo, navigator)
