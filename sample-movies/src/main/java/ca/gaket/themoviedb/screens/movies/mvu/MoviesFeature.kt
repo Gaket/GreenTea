@@ -81,7 +81,7 @@ object MoviesFeature {
       }
 
     private fun handleMovieClick(movie: Movie, state: State): Update<State, Message, Dependencies> = state with setOf(
-      NavigationEffects.Forward(Screen.MovieDetails(movie.id)).adaptIdle { deps -> deps.navigator },
+      NavigationEffects.Forward(Screen.MovieDetails(movie.id)).adaptIdle { dependencies -> dependencies.navigator },
       AnalyticsEffects.SendEvent("Movie Details Requested", mapOf("id" to movie.id)) { analyticsService }
     )
 
@@ -111,8 +111,8 @@ object MoviesFeature {
 
   object Effects {
 
-    data class GetMovies(val query: String) : Effect<Dependencies, Message> by Effect.single({ deps ->
-      val movies = deps.repository.searchMovies(query)
+    data class GetMovies(val query: String) : Effect<Dependencies, Message> by Effect.single({ dependencies ->
+      val movies = dependencies.repository.searchMovies(query)
       return@single Message.MoviesResponse(movies)
     })
 

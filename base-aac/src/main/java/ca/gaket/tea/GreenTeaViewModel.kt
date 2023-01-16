@@ -63,5 +63,5 @@ open class GreenTeaViewModel<State : Any, Message : Any, Dependencies : Any>(
     super.onCleared()
   }
 
-  fun dispatch(msg: Message) = runtime.dispatch(msg)
+  fun dispatch(Message: Message) = runtime.dispatch(Message)
 }

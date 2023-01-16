@@ -22,7 +22,7 @@ class GreenTeaRuntime<State : Any, Message : Any, Dependencies : Any>(
 
   private val stateListeners = mutableListOf<((State) -> Unit)>()
 
-  private var lastMsg: Message? = null
+  private var lastMessage: Message? = null
 
   private var currentState: State
 
@@ -40,8 +40,8 @@ class GreenTeaRuntime<State : Any, Message : Any, Dependencies : Any>(
   fun dispatch(message: Message) {
     if (isActive) {
       launch(runtimeContext) {
-        if (isMsgThrottled(message, lastMsg)) return@launch
-        lastMsg = message
+        if (isMessageThrottled(message, lastMessage)) return@launch
+        lastMessage = message
         val next = update(message, currentState)
         step(next, currentState !== next.state)
       }
@@ -69,7 +69,7 @@ class GreenTeaRuntime<State : Any, Message : Any, Dependencies : Any>(
 
   private fun <T> List<(T) -> Unit>.notifyAll(value: T) = forEach { listener -> listener.invoke(value) }
 
-  private fun isMsgThrottled(newMessage: Message, lastMessage: Message?): Boolean {
+  private fun isMessageThrottled(newMessage: Message, lastMessage: Message?): Boolean {
     if (newMessage !is CanBeThrottled || lastMessage !is CanBeThrottled) return false
     return newMessage.isThrottled(lastMessage)
   }

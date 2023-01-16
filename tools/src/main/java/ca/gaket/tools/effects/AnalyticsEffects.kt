@@ -5,12 +5,12 @@ import ca.gaket.tools.analytics.AnalyticsService
 
 object AnalyticsEffects {
 
-  data class SendEvent<Deps, out Msg>(
+  data class SendEvent<Dependencies, out Message>(
     val eventName: String,
     val params: Map<String, Any> = emptyMap(),
-    val analyticsProvider: Deps.() -> AnalyticsService
+    val analyticsProvider: Dependencies.() -> AnalyticsService
   ) :
-    Effect<Deps, Msg> by Effect.idle({ deps ->
-      deps.analyticsProvider().track(eventName, params)
+    Effect<Dependencies, Message> by Effect.idle({ dependencies ->
+      dependencies.analyticsProvider().track(eventName, params)
     })
 }

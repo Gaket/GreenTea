@@ -1,4 +1,4 @@
-package com.getsquire.common.presentation.effects
+package ca.gaket.tools.effects
 
 import ca.gaket.tea.runtime.coroutines.Effect
 import ca.gaket.tools.android.Router
@@ -6,38 +6,38 @@ import ca.gaket.tools.android.Screen
 
 object NavigationEffects {
 
-  class Replace<Deps, out Msg>(val screen: Screen, routerProvider: Deps.() -> Router) :
-    Effect<Deps, Msg> by Effect.onMain.idle({ deps ->
-      deps.routerProvider().replaceScreen(screen)
+  class Replace<Dependencies, out Message>(val screen: Screen, routerProvider: Dependencies.() -> Router) :
+    Effect<Dependencies, Message> by Effect.onMain.idle({ dependencies ->
+      dependencies.routerProvider().replaceScreen(screen)
     })
 
-  class NewRoot<Deps, out Msg>(val screen: Screen, routerProvider: Deps.() -> Router) :
-    Effect<Deps, Msg> by Effect.onMain.idle({ deps ->
-      deps.routerProvider().newRootScreen(screen)
+  class NewRoot<Dependencies, out Message>(val screen: Screen, routerProvider: Dependencies.() -> Router) :
+    Effect<Dependencies, Message> by Effect.onMain.idle({ dependencies ->
+      dependencies.routerProvider().newRootScreen(screen)
     })
 
-  class NavigateTo<Deps, out Msg>(
+  class NavigateTo<Dependencies, out Message>(
     val screen: Screen,
     val clearContainer: Boolean = true,
-    routerProvider: Deps.() -> Router
+    routerProvider: Dependencies.() -> Router
   ) :
-    Effect<Deps, Msg> by Effect.onMain.idle({ deps ->
-      deps.routerProvider().navigateTo(screen, clearContainer)
+    Effect<Dependencies, Message> by Effect.onMain.idle({ dependencies ->
+      dependencies.routerProvider().navigateTo(screen, clearContainer)
     })
 
-  class Exit<Deps, out Msg>(routerProvider: Deps.() -> Router) :
-    Effect<Deps, Msg> by Effect.onMain.idle({ deps ->
-      deps.routerProvider().exit()
+  class Exit<Dependencies, out Message>(routerProvider: Dependencies.() -> Router) :
+    Effect<Dependencies, Message> by Effect.onMain.idle({ dependencies ->
+      dependencies.routerProvider().exit()
     })
 
 
-  class BackTo<Deps, out Msg>(val screen: Screen, routerProvider: Deps.() -> Router) :
-    Effect<Deps, Msg> by Effect.onMain.idle({ deps ->
-      deps.routerProvider().backTo(screen)
+  class BackTo<Dependencies, out Message>(val screen: Screen, routerProvider: Dependencies.() -> Router) :
+    Effect<Dependencies, Message> by Effect.onMain.idle({ dependencies ->
+      dependencies.routerProvider().backTo(screen)
     })
 
-  class BackToRoot<Deps, out Msg>(routerProvider: Deps.() -> Router) :
-    Effect<Deps, Msg> by Effect.onMain.idle({ deps ->
-      deps.routerProvider().backTo(null)
+  class BackToRoot<Dependencies, out Message>(routerProvider: Dependencies.() -> Router) :
+    Effect<Dependencies, Message> by Effect.onMain.idle({ dependencies ->
+      dependencies.routerProvider().backTo(null)
     })
 }

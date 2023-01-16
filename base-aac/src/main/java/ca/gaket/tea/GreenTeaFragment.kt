@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 
-abstract class GreenTeaFragment<State : Any, Msg : Any, Dependency : Any> : Fragment {
+abstract class GreenTeaFragment<State : Any, Message : Any, Dependency : Any> : Fragment {
 
   private val TAG = this::class.simpleName
 
-  protected abstract val viewModel: GreenTeaViewModel<State, Msg, Dependency>
+  protected abstract val viewModel: GreenTeaViewModel<State, Message, Dependency>
 
   constructor() : super()
   constructor(@LayoutRes layoutRes: Int) : super(layoutRes)
@@ -43,8 +43,8 @@ abstract class GreenTeaFragment<State : Any, Msg : Any, Dependency : Any> : Frag
   abstract fun initDispatchers()
   abstract fun render(state: State)
 
-  protected fun dispatch(msg: Msg) {
-    viewModel.dispatch(msg)
+  protected fun dispatch(Message: Message) {
+    viewModel.dispatch(Message)
   }
 
   private fun initBackButtonHandler() {
